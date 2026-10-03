@@ -108,7 +108,9 @@ echo
 receipts=$(pkgutil --pkgs 2>/dev/null | grep '^com\.microsoft\.package\.Microsoft_AutoUpdate')
 if [ -n "$receipts" ]; then
     echo "Installer receipts:"
-    echo "$receipts" | sed 's/^/  /'
+    for r in $receipts; do
+        echo "  $r"
+    done
     echo
 fi
 
