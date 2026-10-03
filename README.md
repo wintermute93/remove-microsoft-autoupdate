@@ -1,21 +1,38 @@
 # remove-microsoft-autoupdate
 
-Removes Microsoft AutoUpdate (MAU) from macOS.
+**English** | [Português (Brasil)](README.pt-BR.md) | [Русский](README.ru.md)
 
-MAU gets installed with Office, Teams, Edge and friends, runs in the
-background, and keeps nagging you to update. Disabling it in the settings
-doesn't always stick. This script gets rid of it.
+A small shell script that removes Microsoft AutoUpdate (MAU) from macOS.
+
+## Why
+
+Install Word, Excel, Teams, Edge or any other Microsoft app on a Mac and
+you get Microsoft AutoUpdate along with it, whether you asked for it or not.
+It then:
+
+- starts at login and keeps running in the background;
+- pops up update windows at the worst possible moments;
+- installs a helper tool that runs as root (`com.microsoft.autoupdate.helper`),
+  which has had privilege escalation bugs in the past;
+- downloads hundreds of megabytes of updates on its own schedule;
+- comes back after you turn off automatic updates in its settings.
+
+If you'd rather decide yourself when Office gets updated, or you just don't
+want another background service from Microsoft, there is no uninstaller for
+MAU. You have to find its files and delete them by hand. This script does
+that for you.
 
 ## What it does
 
-1. Lists every MAU file it knows about, with size, so you can see what's there.
+1. Lists every MAU file it knows about, with its size, so you can see what's
+   there before anything is touched.
 2. Asks for confirmation.
-3. Unloads the launch daemon/agent and kills any running MAU process.
-4. Deletes the app, helper tool, launchd plists, caches and preferences
-   (system-wide and for the current user).
-5. Forgets the MAU installer receipt (`pkgutil --forget`).
+3. Unloads the launch daemon and agent and kills any running MAU process.
+4. Deletes the app, the helper tool, the launchd plists, caches and
+   preferences, both system-wide and for the current user.
+5. Removes the MAU installer receipt (`pkgutil --forget`).
 
-Paths removed:
+Paths it removes:
 
 ```
 /Library/Application Support/Microsoft/MAU2.0
@@ -32,7 +49,8 @@ Paths removed:
 ~/Library/Application Support/Microsoft AU Daemon
 ```
 
-Office itself is not touched.
+Office itself is not touched. Word, Excel, PowerPoint, Outlook and the rest
+keep working as before; they just stop updating themselves.
 
 ## Usage
 
@@ -53,7 +71,7 @@ Options:
 -V, --version   show version
 ```
 
-To have it around permanently:
+To keep it around:
 
 ```sh
 sudo install -m 755 remove-microsoft-autoupdate /usr/local/bin/
@@ -62,12 +80,12 @@ sudo install -m 755 remove-microsoft-autoupdate /usr/local/bin/
 ## Notes
 
 - Installing or updating an Office app with Microsoft's `.pkg` installer
-  brings MAU back. Just run the script again afterwards.
-- Without MAU, Office won't update itself. Grab updates manually from the
+  brings MAU back. Run the script again afterwards.
+- Without MAU, Office won't update itself. Get updates from the
   [Office for Mac update history](https://learn.microsoft.com/officeupdates/update-history-office-for-mac)
-  page, which also links the standalone MAU installer if you want it back.
-- Apps installed from the Mac App Store are updated by the App Store and
-  aren't affected.
+  page, which also links the standalone MAU installer if you ever want it back.
+- Office installed from the Mac App Store is updated by the App Store and
+  doesn't depend on MAU.
 
 ## License
 
