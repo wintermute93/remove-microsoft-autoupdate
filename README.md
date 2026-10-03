@@ -37,7 +37,7 @@ Office itself is not touched.
 ## Usage
 
 ```sh
-git clone https://github.com/isaiasoliveira/remove-microsoft-autoupdate.git
+git clone https://github.com/wintermute93/remove-microsoft-autoupdate.git
 cd remove-microsoft-autoupdate
 
 ./remove-microsoft-autoupdate --dry-run   # see what would be removed
